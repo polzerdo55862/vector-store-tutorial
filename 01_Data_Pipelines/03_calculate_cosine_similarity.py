@@ -22,7 +22,7 @@ def _get_embeddings(text_chunk):
     model_id = "sentence-transformers/all-MiniLM-L6-v2"
 
     # you can find the token to the hugging face api in your settings page https://huggingface.co/settings/tokens
-    hf_token = os.environ.get('hf_token')
+    hf_token = os.environ.get('HF_TOKEN')
 
     # API endpoint for embedding model
     api_url = f"https://api-inference.huggingface.co/pipeline/feature-extraction/{model_id}"
@@ -63,7 +63,6 @@ def calculate_cosine_similarity(text_chunk, embeddings_df):
     cos_sim = []
 
     for index, row in embeddings_df.iterrows():
-        print(index)
         A = row.embeddings_array
         B = sentence_embedding
 

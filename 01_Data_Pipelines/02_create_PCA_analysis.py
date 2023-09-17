@@ -17,6 +17,8 @@ def create_pca_plot(embeddings_df):
     '''
     # Perform PCA with 2 components
     pca = PCA(n_components=2)
+
+    # apply principal component analysis to the embeddings table
     df_reduced = pca.fit_transform(embeddings_df[embeddings_df.columns[:-2]])
 
     # Create a new DataFrame with reduced dimensions
@@ -38,7 +40,7 @@ def create_pca_plot(embeddings_df):
             plt.text(df_reduced['PC1'][i], df_reduced['PC2'][i], label)
 
         # Save and display the plot
-        plt.savefig('./02_Data/principal_component_plot.png', format='png')
+        plt.savefig('../02_Data/principal_component_plot.png', format='png')
 
     # create and save scatter plot
     create_scatter_plot(df_reduced=df_reduced)
@@ -46,7 +48,7 @@ def create_pca_plot(embeddings_df):
     return df_reduced
 
 # Load embeddings_df.csv into data frame
-embeddings_df = pd.read_csv('./02_Data/embeddings_df.csv')
+embeddings_df = pd.read_csv('../02_Data/embeddings_df.csv')
 
 # use the function create_pca_plot to
 df_reduced = create_pca_plot(embeddings_df)

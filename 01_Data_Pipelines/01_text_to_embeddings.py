@@ -8,10 +8,11 @@ saves the DataFrame including "text_chunks" and "embeddings" in the csv file "em
 import os
 import requests
 import pandas as pd
+import numpy as np
 
 # hugging face token
-#os.environ['hf_token'] = os.environ.get('hf_token')
-os.environ['hf_token'] = 'testtoken123'
+os.environ['hf_token'] = os.environ.get('HF_TOKEN')
+# os.environ['hf_token'] = 'testtoken123'
 
 # example text snippets we want to translate into vector embeddings
 text_chunks = [
@@ -72,7 +73,7 @@ def from_text_to_embeddings(text_chunks):
     embeddings_df["embeddings"] = embeddings_df["text_chunk"].apply(_get_embeddings)
 
     # split the embeddings column into individuell columns for each vector dimension
-    # embeddings_df = embeddings_df['embeddings'].apply(pd.Series)
+    embeddings_df = embeddings_df['embeddings'].apply(pd.Series)
     embeddings_df["text_chunk"] = text_chunks
 
     return embeddings_df

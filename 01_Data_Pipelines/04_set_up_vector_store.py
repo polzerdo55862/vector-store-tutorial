@@ -7,10 +7,6 @@ import chromadb
 from chromadb.config import Settings
 import pandas as pd
 
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-
 # vector store settings
 VECTOR_STORE_PATH = r'../02_Data/00_Vector_Store'
 COLLECTION_NAME = 'my_collection'

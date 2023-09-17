@@ -16,10 +16,7 @@ embeddings_df = pd.read_csv('../02_Data/embeddings_df.csv')
 
 def get_or_create_client_and_collection(VECTOR_STORE_PATH, COLLECTION_NAME):
     # get/create a chroma client
-    chroma_client = chromadb.Client(
-        Settings(chroma_db_impl="duckdb+parquet",
-        persist_directory=VECTOR_STORE_PATH
-    ))
+    chroma_client = chromadb.PersistentClient(path=VECTOR_STORE_PATH)
 
     # get or create collection
     collection = chroma_client.get_or_create_collection(name=COLLECTION_NAME)
@@ -37,10 +34,13 @@ def add_to_collection(embeddings_df):
     #     ids=["id1", "id2"]
     # )
 
+    # combine all dimensions of the vector embeddings to one array
+    embeddings_df['embeddings_array'] = embeddings_df.apply(lambda row: row.values[:-1], axis=1)
+
     # add data frame to collection
     collection.add(
         embeddings=embeddings_df.embeddings_array,
-        documents=embeddings_df.text,
+        documents=embeddings_df.text_chunk,
         ids=str(embeddings_df.index.tolist())
     )
 

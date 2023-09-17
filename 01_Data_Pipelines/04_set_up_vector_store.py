@@ -36,12 +36,14 @@ def add_to_collection(embeddings_df):
 
     # combine all dimensions of the vector embeddings to one array
     embeddings_df['embeddings_array'] = embeddings_df.apply(lambda row: row.values[:-1], axis=1)
+    embeddings_df['embeddings_array'] = embeddings_df['embeddings_array'].apply(lambda x: x.tolist())
 
     # add data frame to collection
     collection.add(
-        embeddings=embeddings_df.embeddings_array,
-        documents=embeddings_df.text_chunk,
-        ids=str(embeddings_df.index.tolist())
+        embeddings=embeddings_df.embeddings_array.to_list(),
+        documents=embeddings_df.text_chunk.to_list(),
+        # create a list of string as index
+        ids=list(map(str, embeddings_df.index.tolist()))
     )
 
 # add the embeddings_df to our vector store collection
@@ -49,21 +51,23 @@ add_to_collection(embeddings_df)
 
 def get_all_entries(collection):
     # query collection
-    existing_docs = pd.DataFrame(self.collection.get()).rename(columns={0: "ids", 1:"embeddings", 2:"documents", 3:"metadatas"})
+    existing_docs = pd.DataFrame(collection.get()).rename(columns={0: "ids", 1:"embeddings", 2:"documents", 3:"metadatas"})
     existing_docs.to_excel(r"..//02_Data//01_vector_stores_export.xlsx")
     return existing_docs
 
 # extract all entries in vector store collection
 existing_docs = get_all_entries(collection)
 
-def query_vector_database(VECTOR_STORE_PATH, COLLECTION_NAME, query):
+def query_vector_database(VECTOR_STORE_PATH, COLLECTION_NAME, query, n=2):
     # query collection
     results = collection.query(
         query_texts=query,
-        n_results=2
+        n_results=n
     )
 
+    print(f"Similarity Search: {n} most similar entries:")
+    print(results["documents"])
     return results
 
 # similarity search
-similar_vector_entries = query_vector_database(VECTOR_STORE_PATH, COLLECTION_NAME, query=["This is a query document"])
+similar_vector_entries = query_vector_database(VECTOR_STORE_PATH, COLLECTION_NAME, query=["Lilies are white."])

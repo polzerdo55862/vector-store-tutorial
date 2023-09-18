@@ -1,4 +1,4 @@
-# Tutorial to Text Embeddings and Vector Databases
+# Tutorial on Text Embeddings and Vector Databases
 
 Source code to the Medium blog post "All You Need to Know about Vector Databases and How to Use Them to Augment Your LLM Apps":
 
